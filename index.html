@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teak Room Interiors | Crafting Soulful Spaces</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#004E4A',
+                            gold: '#C5A575',
+                            white: '#F5F5F2',
+                            overlay: 'rgba(0, 78, 74, 0.65)'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            cursor: none !important;
+        }
+
+        body {
+            background-color: #004E4A;
+            color: #F5F5F2;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        ::selection {
+            background: #C5A575;
+            color: #004E4A;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #003633;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #C5A575;
+        }
+
+        .drafting-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(to right, rgba(197, 165, 117, 0.18) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(197, 165, 117, 0.18) 1.5px, transparent 1.5px),
+                linear-gradient(to right, rgba(197, 165, 117, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(197, 165, 117, 0.08) 1px, transparent 1px);
+            background-size: 320px 320px, 320px 320px, 80px 80px, 80px 80px;
+            mask-image: radial-gradient(circle at center, black, transparent 95%);
+            opacity: 0.85;
+        }
+
+        .drafting-grid::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(197, 165, 117, 0.3) 1.5px, transparent 1.5px);
+            background-size: 80px 80px;
+        }
+
+        .noise-texture {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        #cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: #C5A575;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(197, 165, 117, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s ease-out;
+        }
+
+        .cursor-hover #cursor-dot {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(197, 165, 117, 0.2);
+        }
+
+        .cursor-hover #cursor-ring {
+            width: 60px;
+            height: 60px;
+            border-color: #C5A575;
+        }
+
+        .nav-link {
+            position: relative;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            transition: color 0.5s;
+            padding-bottom: 4px;
+            display: inline-block;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: rgba(245, 245, 242, 0.7);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #C5A575;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover {
+            color: #C5A575;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card .card-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (max-width: 1023px) {
+            .project-card .card-content {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .project-card:hover .card-content {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #enquiry-modal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        #enquiry-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "framer-motion": "https://esm.sh/framer-motion@^12.23.26"
+  }
+}
+</script>
+</head>
+
+<body>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+    <div class="noise-texture"></div>
+    <div class="drafting-grid"></div>
+
+    <nav
+        class="fixed top-0 left-0 w-full z-40 bg-brand-teal/80 backdrop-blur-md border-b border-brand-gold/10 px-6 py-4 md:px-12">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 border border-brand-gold flex items-center justify-center text-brand-gold text-xs font-serif italic transition-colors group-hover:bg-brand-gold group-hover:text-brand-teal">
+                    TR</div>
+                <span class="font-serif text-xl tracking-widest uppercase text-brand-gold">Teak Room</span>
+            </a>
+            <div class="hidden md:flex gap-10 items-center">
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#clients" class="nav-link">Clients</a>
+                <button onclick="toggleModal(true)" class="nav-link">Contact</button>
+            </div>
+            <button onclick="toggleModal(true)" class="md:hidden text-brand-gold flex items-center gap-2">
+                <span class="text-[10px] uppercase tracking-widest font-medium">Contact</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="relative h-screen flex items-center justify-center text-center px-6 overflow-hidden z-10">
+        <div class="reveal active">
+            <h1
+                class="text-6xl md:text-9xl font-sans font-extralight text-brand-white tracking-tighter leading-none mb-6">
+                Crafting <span class="font-serif italic text-brand-gold block md:inline">Soulful</span> Spaces
+            </h1>
+            <div class="h-[1px] bg-brand-gold/30 w-24 mx-auto mb-10"></div>
+            <p class="text-brand-gold text-[10px] md:text-xs uppercase tracking-[0.5em] font-medium opacity-80">
+                Your Dream Space is Our Focus
+            </p>
+            <div class="mt-20 flex flex-col items-center opacity-40">
+                <div class="w-[1px] h-16 bg-brand-gold/20 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-gold to-transparent animate-bounce">
+                    </div>
+                </div>
+                <span class="text-[8px] uppercase tracking-[0.4em] text-brand-gold/60 mt-4">Scroll to Reveal</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Preview Section -->
+    <section class="relative z-20 py-24 px-6 md:px-12 max-w-7xl mx-auto -mt-[15vh] md:-mt-[30vh]">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <div class="reveal">
+                <p class="text-brand-gold uppercase tracking-[0.4em] text-[10px] mb-4">Portfolio</p>
+                <h2 class="text-4xl md:text-6xl font-serif text-brand-white leading-none">Featured <span
+                        class="italic">Work</span></h2>
+            </div>
+            <a href="projects.html"
+                class="reveal group flex items-center gap-4 text-brand-gold hover:text-brand-white transition-colors duration-500">
+                <span class="text-[10px] uppercase tracking-[0.6em]">View Full Portfolio</span>
+                <div
+                    class="w-10 h-10 border border-brand-gold/30 rounded-full flex items-center justify-center group-hover:border-brand-gold">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        </path>
+                    </svg>
+                </div>
+            </a>
+        </div>
+        <div id="featured-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
+            <!-- Injected by JS -->
+        </div>
+    </section>
+
+    <section id="services"
+        class="py-32 px-6 md:px-12 bg-brand-teal/30 border-y border-brand-gold/10 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div class="reveal">
+                <p class="text-brand-gold uppercase tracking-[0.3em] text-[10px] mb-4">Our Expertise</p>
+                <h2 class="text-4xl md:text-5xl font-serif text-brand-white mb-8 leading-tight">
+                    Elevating the Human Experience through <span class="italic">Design</span>.
+                </h2>
+                <p class="text-brand-white/60 font-light leading-relaxed max-w-md mb-12">
+                    Teak Room Interiors specializes in high-end environments that transcend time. We merge architectural
+                    precision with organic soul to create spaces that aren't just seen, but felt.
+                </p>
+                <button onclick="toggleModal(true)"
+                    class="border border-brand-gold text-brand-gold px-10 py-4 text-xs uppercase tracking-[0.3em] hover:bg-brand-gold hover:text-brand-teal transition-all duration-500">
+                    Get a Quote
+                </button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8" id="services-grid"></div>
+        </div>
+    </section>
+
+    <section class="py-32 px-6 md:px-12 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-24 reveal">
+                <p class="text-brand-gold uppercase tracking-[0.3em] text-[10px] mb-4">The Journey</p>
+                <h2 class="text-4xl md:text-5xl font-serif text-brand-white uppercase tracking-widest">Our Project
+                    Process</h2>
+            </div>
+            <div class="relative flex flex-col md:flex-row gap-12 md:gap-4 items-start" id="process-timeline"></div>
+        </div>
+    </section>
+
+    <section id="clients" class="py-32 bg-brand-teal/20 border-t border-brand-gold/10 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-brand-gold/40 uppercase tracking-[0.8em] text-[9px] mb-20 font-bold">Trusted by Industry
+                Leaders</p>
+            <div
+                class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-12 items-center opacity-30 grayscale hover:opacity-100 transition-all duration-1000">
+                <span class="text-sm md:text-lg font-sans font-semibold text-brand-white tracking-[0.3em]">TATA</span>
+                <span class="text-sm md:text-lg font-sans font-semibold text-brand-white tracking-[0.3em]">LULU
+                    GROUP</span>
+                <span class="text-sm md:text-lg font-sans font-semibold text-brand-white tracking-[0.3em]">HILTON</span>
+                <span class="text-sm md:text-lg font-sans font-semibold text-brand-white tracking-[0.3em]">KALYAN</span>
+                <span
+                    class="text-sm md:text-lg font-sans font-semibold text-brand-white tracking-[0.3em]">MALABAR</span>
+                <span
+                    class="text-sm md:text-lg font-sans font-semibold text-brand-white tracking-[0.3em]">RELIANCE</span>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact-info" class="bg-brand-teal pt-32 pb-12 px-6 md:px-12 border-t border-brand-gold/10">
+        <div class="max-w-7xl mx-auto text-center mb-32">
+            <h2 class="text-5xl md:text-7xl font-serif text-brand-gold mb-12 reveal">Let's Shape Your <br><span
+                    class="italic">Vision</span>.</h2>
+            <button onclick="toggleModal(true)"
+                class="group relative px-16 py-5 border border-brand-gold overflow-hidden">
+                <span
+                    class="relative z-10 text-brand-gold text-xs uppercase tracking-[0.6em] group-hover:text-brand-teal transition-colors duration-500 font-medium font-sans">Contact
+                    Now</span>
+                <div
+                    class="absolute inset-0 bg-brand-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                </div>
+            </button>
+        </div>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 pt-12 border-t border-brand-gold/10">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <div
+                        class="w-6 h-6 border border-brand-gold flex items-center justify-center text-brand-gold text-[10px] italic">
+                        TR</div>
+                    <span class="font-serif text-lg tracking-widest uppercase text-brand-gold">Teak Room</span>
+                </div>
+                <p class="text-brand-white/40 text-sm max-w-xs leading-loose">Specializing in high-end environments that
+                    transcend time. Designed for Excellence.</p>
+            </div>
+            <div>
+                <h4 class="text-brand-gold text-[10px] uppercase tracking-widest mb-6 font-semibold">Contact Details
+                </h4>
+                <p class="text-brand-white/60 text-sm mb-2">+91 940 0921 011</p>
+                <p class="text-brand-white/60 text-sm mb-6">admin@teakroom.in</p>
+            </div>
+            <div>
+                <h4 class="text-brand-gold text-[10px] uppercase tracking-widest mb-6 font-semibold">Our Studio</h4>
+                <p class="text-brand-white/40 text-sm leading-relaxed">
+                    Teak Room Tower,<br>
+                    Near Palarivattom Metro Station,<br>
+                    Kochi, Kerala
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div id="enquiry-modal" class="fixed inset-0 z-[100] bg-brand-teal flex flex-col overflow-y-auto p-6 md:p-12">
+        <div class="drafting-grid opacity-30"></div>
+        <header class="flex justify-between items-center relative z-10 mb-20">
+            <div class="flex items-center gap-2">
+                <div
+                    class="w-8 h-8 border border-brand-gold flex items-center justify-center text-brand-gold text-xs font-serif italic">
+                    TR</div>
+                <span class="font-serif text-xl tracking-widest uppercase text-brand-gold">Teak Room</span>
+            </div>
+            <button onclick="toggleModal(false)"
+                class="group flex items-center gap-4 text-brand-gold hover:text-brand-white transition-colors">
+                <span class="text-[10px] uppercase tracking-[0.4em]">Close</span>
+                <div
+                    class="w-10 h-10 border border-brand-gold/30 rounded-full flex items-center justify-center group-hover:border-brand-gold transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round"></path>
+                    </svg>
+                </div>
+            </button>
+        </header>
+
+        <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-20 relative z-10 flex-grow mb-12">
+            <div>
+                <p class="text-brand-gold uppercase tracking-[0.4em] text-[10px] mb-6">Let's Connect</p>
+                <h1 class="text-5xl md:text-7xl font-serif text-brand-white leading-tight mb-12">Tell us about your
+                    <span class="italic text-brand-gold">dream space</span>.</h1>
+
+                <div class="space-y-8 mt-16 opacity-60">
+                    <div class="flex gap-4 items-start">
+                        <div
+                            class="w-10 h-10 border border-brand-gold/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <p class="text-sm">Teak Room Tower, Near Palarivattom Metro Station, Kochi, Kerala</p>
+                    </div>
+                    <div class="flex gap-4 items-start">
+                        <div
+                            class="w-10 h-10 border border-brand-gold/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <p class="text-sm">admin@teakroom.in</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative">
+                <form id="enquiry-form"
+                    class="bg-brand-teal/40 backdrop-blur-xl border border-brand-gold/10 p-8 md:p-12 space-y-8"
+                    onsubmit="handleEnquiry(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <input type="text" placeholder="Your Name" required
+                            class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold transition-colors placeholder:text-brand-white/20">
+                        <input type="email" placeholder="Email Address" required
+                            class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold transition-colors placeholder:text-brand-white/20">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <input type="tel" placeholder="Phone Number" required
+                            class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold transition-colors placeholder:text-brand-white/20">
+                        <div class="relative">
+                            <select required
+                                class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold transition-colors cursor-pointer opacity-40 focus:opacity-100">
+                                <option value="" disabled selected class="bg-brand-teal">Service Category</option>
+                                <option value="3d-animation" class="bg-brand-teal">3D Animation</option>
+                                <option value="space-planning" class="bg-brand-teal">Space Planning</option>
+                                <option value="interior-design" class="bg-brand-teal">Interior Design</option>
+                                <option value="renovation" class="bg-brand-teal">Renovation</option>
+                            </select>
+                            <div class="absolute right-0 bottom-4 pointer-events-none">
+                                <svg class="w-4 h-4 text-brand-gold" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea rows="4" placeholder="Brief description of your project" required
+                        class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold transition-colors placeholder:text-brand-white/20 resize-none"></textarea>
+
+                    <button type="submit" class="w-full group relative py-5 border border-brand-gold overflow-hidden">
+                        <span
+                            class="relative z-10 text-brand-gold text-xs uppercase tracking-[0.6em] group-hover:text-brand-teal transition-colors duration-500 font-bold font-sans">Send
+                            Inquiry</span>
+                        <div
+                            class="absolute inset-0 bg-brand-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                        </div>
+                    </button>
+                </form>
+
+                <div id="success-msg"
+                    class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-12 bg-brand-teal/90 backdrop-blur-xl border border-brand-gold/40 z-20">
+                    <div class="w-20 h-20 border border-brand-gold rounded-full flex items-center justify-center mb-8">
+                        <svg class="w-10 h-10 text-brand-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-serif text-brand-gold mb-4">Inquiry Received</h3>
+                    <p class="text-brand-white/60 text-sm max-w-xs leading-relaxed">
+                        Thank you for reaching out. Our design consultants will contact you shortly.
+                    </p>
+                    <button onclick="resetForm()"
+                        class="mt-8 text-brand-gold text-[10px] uppercase tracking-[0.4em] border-b border-brand-gold/30 hover:border-brand-gold transition-all pb-1">Send
+                        Another</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const projectsData = [
+            { id: '1', title: 'Modern Living Room', category: 'Residential', image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200', aspect: 'portrait' },
+            { id: '2', title: 'Contemporary Kitchen', category: 'Residential', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' },
+            { id: '3', title: 'Executive Workspace', category: 'Commercial', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' }
+        ];
+
+        function renderProjects() {
+            const grid = document.getElementById('featured-grid');
+            if (!grid) return;
+            projectsData.forEach(p => {
+                const card = document.createElement('div');
+                card.className = `project-card relative overflow-hidden group border border-brand-gold/10 ${p.aspect === 'portrait' ? 'row-span-2' : 'row-span-1'}`;
+                card.innerHTML = `
+                    <img src="${p.image}" class="w-full h-full object-cover transition-all duration-1000 brightness-75 group-hover:brightness-100 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-teal via-transparent to-transparent opacity-60"></div>
+                    <div class="card-content absolute bottom-0 left-0 p-8 w-full z-10">
+                        <p class="text-brand-gold text-[8px] uppercase tracking-[0.4em] mb-2">${p.category}</p>
+                        <h3 class="text-brand-white text-2xl font-serif mb-3">${p.title}</h3>
+                        <div class="h-[1px] bg-brand-gold/40 w-12 group-hover:w-full transition-all duration-700"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderServices() {
+            const grid = document.getElementById('services-grid');
+            const svcs = [
+                { title: '3D Animation', desc: 'Transforming concepts into stunning, life-like visual experiences. Our animations provide a realistic preview of your space.' },
+                { title: 'Space Planning', desc: 'Maximizing every square foot for optimal flow and functionality. Expert layouts that adapt to your lifestyle.' },
+                { title: 'Interior Design', desc: 'Bespoke interiors that reflect your style and elevate your living. We curate every element for a luxury atmosphere.' },
+                { title: 'Renovation', desc: 'Modernizing existing structures with architectural precision. Revitalizing spaces into contemporary masterpieces.' }
+            ];
+            svcs.forEach(s => {
+                const div = document.createElement('div');
+                div.className = 'p-8 border border-brand-gold/10 bg-brand-teal/20 reveal group hover:border-brand-gold/40 transition-all';
+                div.innerHTML = `<h3 class="text-xl font-serif text-brand-white mb-3">${s.title}</h3><p class="text-sm text-brand-white/50 leading-relaxed">${s.desc}</p>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function renderProcess() {
+            const timeline = document.getElementById('process-timeline');
+            const steps = [
+                { id: 1, title: 'Engagement', desc: 'Understanding your requirements and aesthetic preferences.' },
+                { id: 2, title: 'Development', desc: 'Creating conceptual designs and mood boards.' },
+                { id: 3, title: 'Approval', desc: 'Finalizing layouts and material palettes via 3D renders.' },
+                { id: 4, title: 'Implementation', desc: 'Transforming designs into reality with precision.' },
+                { id: 5, title: 'Completion', desc: 'Final styling and delivery of your finished space.' }
+            ];
+            steps.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'flex-1 group reveal';
+                div.innerHTML = `<div class="w-16 h-16 rounded-full border border-brand-gold/20 flex items-center justify-center text-brand-gold font-serif text-xl mb-6 group-hover:border-brand-gold transition-colors">0${p.id}</div><h3 class="text-brand-white text-lg font-serif mb-2 uppercase tracking-widest">${p.title}</h3><p class="text-brand-white/40 text-sm leading-relaxed">${p.desc}</p>`;
+                timeline.appendChild(div);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+            renderServices();
+            renderProcess();
+            initAnimations();
+        });
+
+        function toggleModal(open) {
+            const modal = document.getElementById('enquiry-modal');
+            if (open) {
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function handleEnquiry(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button span');
+            const originalText = btn.innerText;
+            btn.innerText = 'TRANSMITTING...';
+            setTimeout(() => {
+                document.getElementById('enquiry-form').classList.add('hidden');
+                document.getElementById('success-msg').classList.remove('hidden');
+                btn.innerText = originalText;
+            }, 1500);
+        }
+
+        function resetForm() {
+            document.getElementById('enquiry-form').reset();
+            document.getElementById('enquiry-form').classList.remove('hidden');
+            document.getElementById('success-msg').classList.add('hidden');
+        }
+
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        let mouseX = -100, mouseY = -100;
+        let ringX = -100, ringY = -100;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            dot.style.left = mouseX + 'px'; dot.style.top = mouseY + 'px';
+            if (e.target.closest('button, a, .project-card, input, select, textarea')) document.body.classList.add('cursor-hover');
+            else document.body.classList.remove('cursor-hover');
+        });
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15;
+            ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        function initAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) { window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' }); }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

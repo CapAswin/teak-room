@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Teak Room Interiors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#004E4A',
+                            gold: '#C5A575',
+                            white: '#F5F5F2',
+                            overlay: 'rgba(0, 78, 74, 0.65)'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            cursor: none !important;
+        }
+
+        body {
+            background-color: #004E4A;
+            color: #F5F5F2;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        ::selection {
+            background: #C5A575;
+            color: #004E4A;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #003633;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #C5A575;
+        }
+
+        .drafting-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(to right, rgba(197, 165, 117, 0.18) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, rgba(197, 165, 117, 0.18) 1.5px, transparent 1.5px),
+                linear-gradient(to right, rgba(197, 165, 117, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(197, 165, 117, 0.08) 1px, transparent 1px);
+            background-size: 320px 320px, 320px 320px, 80px 80px, 80px 80px;
+            mask-image: radial-gradient(circle at center, black, transparent 95%);
+            opacity: 0.85;
+        }
+
+        .noise-texture {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        #cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: #C5A575;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(197, 165, 117, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s ease-out;
+        }
+
+        .cursor-hover #cursor-dot {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(197, 165, 117, 0.2);
+        }
+
+        .cursor-hover #cursor-ring {
+            width: 60px;
+            height: 60px;
+            border-color: #C5A575;
+        }
+
+        .nav-link {
+            position: relative;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            transition: color 0.5s;
+            padding-bottom: 4px;
+            display: inline-block;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: rgba(245, 245, 242, 0.7);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #C5A575;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover {
+            color: #C5A575;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+        }
+
+        .filter-btn.active {
+            color: #004E4A !important;
+        }
+
+        .filter-indicator {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card .card-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover .card-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blueprint-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 2s ease;
+        }
+
+        .project-card:hover .blueprint-line {
+            stroke-dashoffset: 0;
+        }
+
+        #enquiry-modal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        #enquiry-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="pt-24">
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+    <div class="noise-texture"></div>
+    <div class="drafting-grid"></div>
+
+    <nav
+        class="fixed top-0 left-0 w-full z-40 bg-brand-teal/80 backdrop-blur-md border-b border-brand-gold/10 px-6 py-4 md:px-12">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 border border-brand-gold flex items-center justify-center text-brand-gold text-xs font-serif italic transition-colors group-hover:bg-brand-gold group-hover:text-brand-teal">
+                    TR</div>
+                <span class="font-serif text-xl tracking-widest uppercase text-brand-gold">Teak Room</span>
+            </a>
+            <div class="hidden md:flex gap-10 items-center">
+                <a href="projects.html" class="nav-link text-brand-gold !opacity-100 after:scale-x-100">Projects</a>
+                <a href="index.html#services" class="nav-link">Services</a>
+                <a href="index.html#clients" class="nav-link">Clients</a>
+                <button onclick="toggleModal(true)" class="nav-link">Contact</button>
+            </div>
+            <button onclick="toggleModal(true)" class="md:hidden text-brand-gold flex items-center gap-2">
+                <span class="text-[10px] uppercase tracking-widest font-medium">Contact</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <header class="max-w-7xl mx-auto px-6 md:px-12 py-16 text-center reveal active">
+        <p class="text-brand-gold uppercase tracking-[0.5em] text-[10px] mb-6 font-medium">Curated Spaces</p>
+        <h1 class="text-5xl md:text-8xl font-serif text-brand-white leading-none">Architectural <br><span
+                class="italic text-brand-gold font-light">Excellence</span></h1>
+    </header>
+
+    <section class="relative z-20 py-12 px-6 md:px-12 max-w-7xl mx-auto reveal">
+        <div class="flex justify-center mb-16 px-4">
+            <div
+                class="relative flex bg-brand-teal/60 backdrop-blur-xl border border-brand-gold/20 rounded-full p-1 overflow-x-auto no-scrollbar">
+                <div id="filter-indicator"
+                    class="filter-indicator absolute bg-brand-gold rounded-full h-[calc(100%-8px)] top-1 left-1"
+                    style="width: 100px;"></div>
+                <button onclick="filterProjects('All Spaces', this)"
+                    class="filter-btn active relative px-6 py-2 text-[10px] md:text-xs uppercase tracking-[0.2em] whitespace-nowrap transition-colors z-10 text-brand-white font-medium">All
+                    Spaces</button>
+                <button onclick="filterProjects('Residential', this)"
+                    class="filter-btn relative px-6 py-2 text-[10px] md:text-xs uppercase tracking-[0.2em] whitespace-nowrap transition-colors z-10 text-brand-white font-medium">Residential</button>
+                <button onclick="filterProjects('Commercial', this)"
+                    class="filter-btn relative px-6 py-2 text-[10px] md:text-xs uppercase tracking-[0.2em] whitespace-nowrap transition-colors z-10 text-brand-white font-medium">Commercial</button>
+                <button onclick="filterProjects('Bespoke Furniture', this)"
+                    class="filter-btn relative px-6 py-2 text-[10px] md:text-xs uppercase tracking-[0.2em] whitespace-nowrap transition-colors z-10 text-brand-white font-medium">Bespoke
+                    Furniture</button>
+            </div>
+        </div>
+        <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]"></div>
+    </section>
+
+    <footer class="bg-brand-teal pt-32 pb-12 px-6 md:px-12 border-t border-brand-gold/10 mt-32">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <div
+                        class="w-6 h-6 border border-brand-gold flex items-center justify-center text-brand-gold text-[10px] italic">
+                        TR</div>
+                    <span class="font-serif text-lg tracking-widest uppercase text-brand-gold">Teak Room</span>
+                </div>
+                <p class="text-brand-white/40 text-sm max-w-xs leading-loose">Specializing in high-end environments that
+                    transcend time.</p>
+            </div>
+            <div>
+                <h4 class="text-brand-gold text-[10px] uppercase tracking-widest mb-6 font-semibold">Contact Details
+                </h4>
+                <p class="text-brand-white/60 text-sm mb-2">+91 940 0921 011</p>
+                <p class="text-brand-white/60 text-sm mb-6">admin@teakroom.in</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="enquiry-modal" class="fixed inset-0 z-[100] bg-brand-teal flex flex-col overflow-y-auto p-6 md:p-12">
+        <div class="drafting-grid opacity-30"></div>
+        <header class="flex justify-between items-center mb-20 relative z-10">
+            <div class="flex items-center gap-2">
+                <div
+                    class="w-8 h-8 border border-brand-gold flex items-center justify-center text-brand-gold text-xs font-serif italic">
+                    TR</div>
+                <span class="font-serif text-xl tracking-widest uppercase text-brand-gold">Teak Room</span>
+            </div>
+            <button onclick="toggleModal(false)"
+                class="group flex items-center gap-4 text-brand-gold hover:text-brand-white transition-colors">
+                <span class="text-[10px] uppercase tracking-[0.4em]">Close</span>
+                <div
+                    class="w-10 h-10 border border-brand-gold/30 rounded-full flex items-center justify-center group-hover:border-brand-gold transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round"></path>
+                    </svg>
+                </div>
+            </button>
+        </header>
+        <div class="max-w-2xl mx-auto w-full relative z-10">
+            <h2 class="text-4xl md:text-6xl font-serif text-brand-white mb-12">Start Your <span
+                    class="italic text-brand-gold">Vision</span>.</h2>
+            <form id="enquiry-form" class="space-y-8" onsubmit="handleEnquiry(event)">
+                <input type="text" placeholder="Name" required
+                    class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold transition-colors">
+                <input type="email" placeholder="Email" required
+                    class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold transition-colors">
+                <textarea rows="4" placeholder="Brief project description"
+                    class="w-full bg-transparent border-b border-brand-gold/20 py-4 text-brand-white focus:outline-none focus:border-brand-gold resize-none"></textarea>
+                <button type="submit"
+                    class="w-full py-5 bg-brand-gold text-brand-teal text-xs uppercase tracking-widest font-bold hover:bg-brand-white transition-all">Submit
+                    Inquiry</button>
+            </form>
+            <div id="success-msg" class="hidden text-center p-12">
+                <p class="text-brand-gold text-2xl font-serif">Thank you. An architectural consultant will contact you
+                    shortly.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const allProjects = [
+            { id: '1', title: 'Modern Living Room', category: 'Residential', image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200', aspect: 'portrait' },
+            { id: '2', title: 'Contemporary Kitchen', category: 'Residential', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' },
+            { id: '3', title: 'Executive Workspace', category: 'Commercial', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' },
+            { id: '4', title: 'Teak Cabinetry', category: 'Bespoke Furniture', image: 'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&q=80&w=1200', aspect: 'portrait' },
+            { id: '5', title: 'Master Suite', category: 'Residential', image: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&q=80&w=1200', aspect: 'portrait' },
+            { id: '6', title: 'Corporate HQ', category: 'Commercial', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' },
+            { id: '7', title: 'Luxe Villa', category: 'Residential', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1200', aspect: 'portrait' },
+            { id: '8', title: 'Grand Hotel Foyer', category: 'Hospitality', image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' },
+        ];
+
+        function renderProjects(filter = 'All Spaces') {
+            const grid = document.getElementById('portfolio-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            const filtered = filter === 'All Spaces' ? allProjects : allProjects.filter(p => p.category === filter);
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = `project-card relative overflow-hidden group border border-brand-gold/10 ${p.aspect === 'portrait' ? 'row-span-2' : 'row-span-1'} transition-all duration-700`;
+
+                const pathD = p.aspect === 'portrait' ? "M 20,20 L 180,20 L 180,100" : "M 20,20 L 280,20 L 280,100";
+
+                card.innerHTML = `
+                    <img src="${p.image}" class="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 group-hover:scale-110 brightness-[0.6] group-hover:brightness-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-teal via-transparent to-transparent opacity-60"></div>
+                    
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40 mix-blend-overlay">
+                        <path d="${pathD}" fill="none" stroke="#C5A575" stroke-width="0.5" class="blueprint-line"></path>
+                        <circle cx="20" cy="20" r="1.5" fill="#C5A575" class="blueprint-point"></circle>
+                    </svg>
+
+                    <div class="card-content absolute bottom-0 left-0 p-8 w-full z-10">
+                        <p class="text-brand-gold text-[8px] uppercase tracking-[0.4em] mb-2 font-bold">${p.category}</p>
+                        <h3 class="text-brand-white text-2xl font-serif mb-3 tracking-wide">${p.title}</h3>
+                        <div class="h-[1px] bg-brand-gold/40 w-12 group-hover:w-full transition-all duration-1000"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProjects(cat, btn) {
+            if (!btn) return;
+            renderProjects(cat);
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const indicator = document.getElementById('filter-indicator');
+            if (indicator && btn.offsetParent) {
+                indicator.style.width = `${btn.offsetWidth}px`;
+                indicator.style.left = `${btn.offsetLeft}px`;
+            }
+        }
+
+        function toggleModal(open) {
+            const modal = document.getElementById('enquiry-modal');
+            if (modal) {
+                if (open) {
+                    modal.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    modal.classList.remove('open');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+
+        function handleEnquiry(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.textContent = 'SUBMITTING...';
+                btn.disabled = true;
+            }
+            setTimeout(() => {
+                const form = document.getElementById('enquiry-form');
+                const msg = document.getElementById('success-msg');
+                if (form) form.classList.add('hidden');
+                if (msg) msg.classList.remove('hidden');
+                if (btn) {
+                    btn.textContent = 'SUBMIT INQUIRY';
+                    btn.disabled = false;
+                }
+            }, 1500);
+        }
+
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        let mouseX = -100, mouseY = -100, ringX = -100, ringY = -100;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            if (dot) {
+                dot.style.left = mouseX + 'px'; dot.style.top = mouseY + 'px';
+            }
+            const target = e.target;
+            if (target.closest('button, a, .project-card, input, select, textarea')) {
+                document.body.classList.add('cursor-hover');
+            } else {
+                document.body.classList.remove('cursor-hover');
+            }
+        });
+
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15;
+            if (ring) {
+                ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
+            }
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        function initAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+            const activeBtn = document.querySelector('.filter-btn.active');
+            if (activeBtn) filterProjects('All Spaces', activeBtn);
+            initAnimations();
+        });
+    </script>
+</body>
+
+</html>
