@@ -196,3 +196,13 @@ select {
   -moz-appearance: none;
   appearance: none;
 }
+
+@media (max-width: 1023px) {
+  * {
+    cursor: auto !important;
+  }
+  #cursor-dot,
+  #cursor-ring {
+    display: none !important;
+  }
+}
