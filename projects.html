@@ -445,13 +445,18 @@
     <script>
         const allProjects = [
             { id: '1', title: 'Modern Living Room', category: 'Residential', image: './images/living-room.png', aspect: 'landscape' },
-            { id: '2', title: 'Teak Cabinetry', category: 'Bespoke Furniture', image: './images/Living3.jpeg', aspect: 'landscape' },
+            { id: '2', title: 'Luxury Living Room', category: 'Residential', image: './images/Living3.jpeg', aspect: 'landscape' },
             { id: '3', title: 'First Floor Lounge', category: 'Residential', image: './images/FirstFloor.jpeg', aspect: 'landscape' },
             { id: '4', title: 'Traditional Pooja Room', category: 'Residential', image: './images/POOJA.jpeg', aspect: 'portrait' },
-            { id: '5', title: 'Master Suite', category: 'Residential', image: './images/master-suite.jpg', aspect: 'landscape' },
+            { id: '5', title: 'Elegant Dining Room', category: 'Residential', image: './images/DINING.jpeg', aspect: 'landscape' },
             { id: '6', title: 'Modern Kitchen', category: 'Residential', image: './images/Kitchen3A.jpeg', aspect: 'landscape' },
-            { id: '7', title: 'Luxe Villa', category: 'Residential', image: './images/luxe-villa.jpg', aspect: 'landscape' },
-            { id: '8', title: 'Grand Hotel Foyer', category: 'Commercial', image: './images/hotel-foyer.jpg', aspect: 'landscape' },
+            { id: '7', title: 'Modern Dining Area', category: 'Residential', image: './images/dining1.jpeg', aspect: 'landscape' },
+            { id: '8', title: 'Custom TV Unit', category: 'Bespoke Furniture', image: './images/Tvunit1.jpeg', aspect: 'landscape' },
+            { id: '9', title: 'Wash Unit Design', category: 'Bespoke Furniture', image: './images/WashUnit1.jpeg', aspect: 'landscape' },
+            { id: '10', title: 'Contemporary Living Room', category: 'Residential', image: './images/living2.png', aspect: 'landscape' },
+            { id: '11', title: 'Space Renovation', category: 'Residential', image: './images/Renovation.png', aspect: 'portrait' },
+            { id: '12', title: 'Executive Work Area', category: 'Commercial', image: './images/WorkArea.jpeg', aspect: 'landscape' },
+            { id: '13', title: 'Luxury Bedroom', category: 'Residential', image: './images/BedRoom1.png', aspect: 'landscape' },
         ];
 
         function renderProjects(filter = 'All Spaces') {
@@ -466,7 +471,7 @@
                 const pathD = p.aspect === 'portrait' ? "M 20,20 L 180,20 L 180,100" : "M 20,20 L 280,20 L 280,100";
 
                 card.innerHTML = `
-                    <img src="${p.image}" class="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 group-hover:scale-110 brightness-[0.6] group-hover:brightness-100">
+                    <img src="${p.image}" loading="lazy" decoding="async" alt="${p.title}" class="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 group-hover:scale-110 brightness-[0.6] group-hover:brightness-100">
                     <div class="absolute inset-0 bg-gradient-to-t from-brand-teal via-transparent to-transparent opacity-60"></div>
                     
                     <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40 mix-blend-overlay">
