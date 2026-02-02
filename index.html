@@ -24,9 +24,7 @@
         class="fixed top-0 left-0 w-full z-40 bg-brand-teal/80 backdrop-blur-md border-b border-brand-gold/10 px-6 py-4 md:px-12">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 group">
-                <div
-                    class="w-8 h-8 border border-brand-gold flex items-center justify-center text-brand-gold text-xs font-serif italic transition-colors group-hover:bg-brand-gold group-hover:text-brand-teal">
-                    TR</div>
+                <img src="images/logo.png" alt="Teak Room Interiors" class="h-8 transition-opacity group-hover:opacity-80">
                 <span class="font-serif text-xl tracking-widest uppercase text-brand-gold">Teak Room</span>
             </a>
             <div class="hidden md:flex gap-10 items-center">
@@ -170,10 +168,8 @@
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 pt-12 border-t border-brand-gold/10">
             <div class="col-span-1 md:col-span-2">
                 <div class="flex items-center gap-2 mb-6">
-                    <div
-                        class="w-6 h-6 border border-brand-gold flex items-center justify-center text-brand-gold text-[10px] italic">
-                        TR</div>
-                    <span class="font-serif text-lg tracking-widest uppercase text-brand-gold">Teak Room</span>
+                    <img src="images/Logo_full.png" alt="Teak Room Interiors"
+                        class="h-16 md:h-[70px] opacity-90 hover:opacity-100 transition-opacity duration-300 filter brightness-110">
                 </div>
                 <p class="text-brand-white/40 text-sm max-w-xs leading-loose">Specializing in high-end environments that
                     transcend time. Designed for Excellence.</p>
@@ -336,9 +332,9 @@
 
     <script>
         const projectsData = [
-            { id: '1', title: 'Modern Living Room', category: 'Residential', image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1200', aspect: 'portrait' },
-            { id: '2', title: 'Contemporary Kitchen', category: 'Residential', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' },
-            { id: '3', title: 'Executive Workspace', category: 'Commercial', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200', aspect: 'landscape' }
+            { id: '1', title: 'Modern Living Room', category: 'Residential', image: './images/living-room.png', aspect: 'portrait' },
+            { id: '2', title: 'Contemporary Kitchen', category: 'Residential', image: './images/Kitchen3A.jpeg', aspect: 'landscape' },
+            { id: '3', title: 'Executive Workspace', category: 'Commercial', image: './images/WorkArea.jpeg', aspect: 'landscape' }
         ];
 
         function renderProjects() {
