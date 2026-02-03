@@ -206,3 +206,24 @@ select {
     display: none !important;
   }
 }
+.filter-btn.active {
+  color: #004e4a !important;
+}
+
+.filter-indicator {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blueprint-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 2s ease;
+}
+
+.project-card:hover .blueprint-line {
+  stroke-dashoffset: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
