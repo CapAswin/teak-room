@@ -1,24 +1,31 @@
 # Teak Room Interiors
 
-> Luxury interior design studio in Nilambur, Kerala, specializing in residential and commercial spaces, bespoke furniture, and 3D visualization.
+> Luxury interior design studio based in Nilambur, Kerala, specializing in residential and commercial interiors and bespoke teak furniture. Serves Nilambur, Malappuram, Kozhikode, and Palakkad districts.
 
-## About
-Teak Room Interiors designs high-end residential and commercial spaces across Kerala, merging architectural precision with organic materials — primarily teak-based craftsmanship.
-
-## Services
-- Residential Interior Design
-- Commercial Interior Design
-- Bespoke Furniture Design
-- 3D Visualization & Animation
-- Space Planning
-- Renovation
+Teak Room Interiors offers space planning, 3D visualization, bespoke furniture design, and full interior execution. Based in Nilambur — home to Asia's oldest teak plantation — with direct access to genuine teak craftsmanship.
 
 ## Contact
-Phone: +91 940 0921 011
-Email: teakroom@gmail.com
-Address: 1st floor, A2 Tower, opposite Teak Museum, Nilambur, Kerala 679329
+- Phone/WhatsApp: +91 940 0921 011
+- Email: teakroom@gmail.com
+- Address: 1st floor, A2 Tower, opposite Teak Museum, Nilambur, Kerala 679329
+- Hours: Monday–Saturday, 9:00 AM – 6:00 PM
 
-## Links
-- Homepage: https://teakroom.in/
-- Projects: https://teakroom.in/projects.html
-- FAQ: https://teakroom.in/faq.html
+## Pricing (approximate, for common small jobs)
+- Cool bar / pantry counter unit: ₹[X] – ₹[Y]
+- Modular kitchen: ₹[X] per sq ft
+- Wardrobe (per unit): ₹[X] – ₹[Y]
+- Single bedroom interior: ₹[X] – ₹[Y]
+- Full home interior (2BHK/3BHK): ₹[X] – ₹[Y]
+(Final cost depends on material, finish, and site conditions. Free consultation and itemized quote provided before work begins.)
+
+## Pages
+- [Home](https://teakroom.in/): Overview of services, process, and featured projects
+- [FAQ](https://teakroom.in/faq.html): Answers on cost, timelines, materials, and process
+- [Projects](https://teakroom.in/projects.html): Portfolio of completed residential and commercial work
+
+## Process
+1. Engagement — understanding requirements and aesthetic preferences
+2. Development — concept designs and mood boards
+3. Approval — finalized layouts and materials via 3D renders
+4. Implementation — execution with precision
+5. Completion — final styling and delivery
